@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        #dataDisplay {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .data-item {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .data-item:last-child {
+            border-bottom: none;
+        }
+        .data-item strong {
+            color: #555;
+        }
+    </style>
+    <script>
+    async function fetchData() {
+        try {
+            const response = await fetch('/jsondata');
+            if (response.ok) {
+                const data = await response.json();
+                // console.log(data)
+                const displayArea = document.getElementById('dataDisplay');
+                displayArea.innerHTML = '';
+                data.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'data-item';
+                    div.innerHTML = `
+                        <strong>Name:</strong> ${item.firstName} ${item.lastName} <br>
+                        <strong>Mobile No:</strong> ${item.mobileNo} <br>
+                        <strong>Email Id:</strong> ${item.emailId} <br>
+                        <strong>Address:</strong> ${item.address.street}, ${item.address.city}, ${item.address.state}, ${item.address.country} <br>
+                        <strong>Login Id:</strong> ${item.loginId} <br>
+                        <strong>Password:</strong> ${item.password} <br>
+                        <hr>
+                    `;
+                    displayArea.appendChild(div);
+                });
+            } else {
+                alert('Error fetching data');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error fetching data');
+        }
+    }
+    // window.onload = fetchData;
+    fetchData();
+</script>
+</head>
+<body>
+    <h1>Stored Data</h1>
+    <div id="dataDisplay"></div>
+</body>
+</html>
